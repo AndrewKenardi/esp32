@@ -138,7 +138,6 @@
     const db = getDatabase(app);
     const statusRef = ref(db, '/');
 
-    // Update UI saat data berubah di Firebase
     onValue(statusRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) return;
@@ -162,32 +161,29 @@
         data.humidity !== undefined ? data.humidity + ' %' : '-- %';
     });
 
-    // Fungsi untuk aktifkan/menonaktifkan override motor
 window.overrideMotor = (state) => {
   update(statusRef, {
     overrideMotor: state,
-    motor: state // langsung atur juga nilai motor
+    motor: state 
   });
   document.getElementById('message').innerText =
-    state ? 'Override Motor AKTIF.' : 'Override Motor DINONAKTIFKAN.';
+    state ? 'Motor Dinyalakan' : 'Motor Dimatikan';
 };
 
-// Fungsi untuk aktifkan/menonaktifkan override buzzer
 window.overrideBuzzer = (state) => {
   update(statusRef, {
     overrideBuzzer: state,
-    buzzer: state // langsung atur juga nilai buzzer
+    buzzer: state 
   });
   document.getElementById('message').innerText =
-    state ? 'Override Buzzer AKTIF.' : 'Override Buzzer DINONAKTIFKAN.';
+    state ? 'Buzzer Dinyalakan' : 'Buzzer Dimatikan';
 };
 
-// Fungsi untuk reset override (kembali ke mode sensor otomatis)
 window.resetOverride = () => {
   update(statusRef, {
-    resetOverride: true // nanti akan di-reset kembali ke false oleh ESP32
+    resetOverride: true 
   });
-  document.getElementById('message').innerText = 'Override berhasil direset. Sistem kembali ke mode otomatis.';
+  document.getElementById('message').innerText = 'sistem Di-Reset';
 };
 
     
