@@ -59,6 +59,10 @@
       color: green;
       font-weight: bold;
     }
+
+    .start-motor {background-color: #28a745; color: white}
+    .start-buzzer {background-color: #28a745    ; color: white
+        ;}
   </style>
 </head>
 <body>
@@ -97,6 +101,11 @@
     <div class="button-group">
       <button class="stop-motor" onclick="stopMotor()">Hentikan Motor</button>
       <button class="stop-buzzer" onclick="stopBuzzer()">Hentikan Buzzer</button>
+    </div>
+
+    <div class="button-group">
+        <button class="start-motor" onclick="startMotor()">Nyalakan Motor</button>
+        <button class="start-buzzer" onclick="startBuzzer()">Nyalakan Buzzer</button>
     </div>
 
     <div id="message" class="status-message"></div>
@@ -160,6 +169,18 @@
       update(statusRef, { buzzer: false });
       document.getElementById('message').innerText = 'Buzzer berhasil dimatikan.';
     };
+
+    window.startMotor = () => {
+      update(statusRef, { motor: true });
+      document.getElementById('message').innerText = 'Motor berhasil dinyalakan.';
+    };
+
+    // Fungsi untuk menghentikan buzzer
+    window.startBuzzer = () => {
+      update(statusRef, { buzzer: true });
+      document.getElementById('message').innerText = 'Buzzer berhasil dinyalakan.';
+    };
+    
   </script>
 </body>
 </html>
