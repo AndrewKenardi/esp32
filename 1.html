@@ -99,13 +99,13 @@
     </div>
 
     <div class="button-group">
-  <button class="start-motor" onclick="overrideMotor(true)">Override Motor ON</button>
-  <button class="stop-motor" onclick="overrideMotor(false)">Override Motor OFF</button>
+  <button class="start-motor" onclick="overrideMotor(true)">Nyalakan Motor</button>
+  <button class="stop-motor" onclick="overrideMotor(false)">Matikan Motor</button>
 </div>
 
 <div class="button-group">
-  <button class="start-buzzer" onclick="overrideBuzzer(true)">Override Buzzer ON</button>
-  <button class="stop-buzzer" onclick="overrideBuzzer(false)">Override Buzzer OFF</button>
+  <button class="start-buzzer" onclick="overrideBuzzer(true)">Aktifkan Buzzer</button>
+  <button class="stop-buzzer" onclick="overrideBuzzer(false)">Matikan Buzzer</button>
 </div>
 
 <div class="button-group">
@@ -183,7 +183,7 @@ window.resetOverride = () => {
   update(statusRef, {
     resetOverride: true 
   });
-  document.getElementById('message').innerText = 'sistem Di-Reset';
+  document.getElementById('message').innerText = 'Sistem Di-Reset';
 };
 
     
