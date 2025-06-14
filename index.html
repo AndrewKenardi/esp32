@@ -104,7 +104,12 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+    import {
+      getDatabase,
+      ref,
+      onValue,
+      update
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyA1rEsRrEAooYPvx9DXB5Z_1kP6f2kM3q4",
@@ -118,9 +123,9 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-
     const statusRef = ref(db, '/');
 
+    // Update UI saat data berubah di Firebase
     onValue(statusRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) return;
@@ -143,20 +148,18 @@
       document.getElementById('humValue').innerText =
         data.humidity !== undefined ? data.humidity + ' %' : '-- %';
     });
-  </script>
 
-  <script>
-    function stopMotor() {
-      fetch('/stop_motor').then(() => {
-        document.getElementById('message').innerText = 'Motor berhasil dimatikan.';
-      });
-    }
+    // Fungsi untuk menghentikan motor
+    window.stopMotor = () => {
+      update(statusRef, { motor: false });
+      document.getElementById('message').innerText = 'Motor berhasil dimatikan.';
+    };
 
-    function stopBuzzer() {
-      fetch('/stop_buzzer').then(() => {
-        document.getElementById('message').innerText = 'Buzzer berhasil dimatikan.';
-      });
-    }
+    // Fungsi untuk menghentikan buzzer
+    window.stopBuzzer = () => {
+      update(statusRef, { buzzer: false });
+      document.getElementById('message').innerText = 'Buzzer berhasil dimatikan.';
+    };
   </script>
 </body>
 </html>
