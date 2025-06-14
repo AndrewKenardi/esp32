@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status Sistem ESP32</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); max-width: 400px; width: 100%; text-align: center; }
+    h2 { color: #333; margin-bottom: 20px; }
+    .status-box { margin-bottom: 20px; text-align: left; }
+    .label { font-weight: bold; color: #555; }
+    .value { float: right; font-weight: bold; }
+    .progress { background-color: #ddd; border-radius: 20px; overflow: hidden; height: 20px; margin-top: 5px; }
+    .progress-bar { height: 100%; background: #28a745; width: 0%; }
+    .button-group { margin-top: 30px; }
+    button { padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s ease; }
+    .stop-motor { background-color: #dc3545; color: white; }
+    .stop-buzzer { background-color: #ffc107; color: #333; }
+    button:hover { opacity: 0.9; }
+    .clear { clear: both; }
+    .status-message { margin-top: 15px; color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Status Sistem ESP32</h2>
+    <div class="status-box">
+      <div class="label">Persentase Sensor:</div>
+      <div class="progress">
+        <div class="progress-bar" id="sensorBar"></div>
+      </div>
+      <div class="label">Nilai: <span class="value" id="sensorValue">0%</span></div>
+      <div class="clear"></div>
+    </div>
+    <div class="status-box">
+      <div class="label">Suhu: <span class="value" id="tempValue">-- °C</span></div>
+      <div class="clear"></div>
+    </div>
+    <div class="status-box">
+      <div class="label">Kelembapan: <span class="value" id="humValue">-- %</span></div>
+      <div class="clear"></div>
+    </div>
+    <div class="status-box">
+      <div class="label">Status Motor: <span id="motorStatus" class="value">...</span></div>
+      <div class="clear"></div>
+    </div>
+    <div class="status-box">
+      <div class="label">Status Buzzer: <span id="buzzerStatus" class="value">...</span></div>
+      <div class="clear"></div>
+    </div>
+    <div class="button-group">
+      <button class="stop-motor" onclick="stopMotor()">Hentikan Motor</button>
+      <button class="stop-buzzer" onclick="stopBuzzer()">Hentikan Buzzer</button>
+    </div>
+    <div id="message" class="status-message"></div>
+  </div>
+
+  <script>
+    function stopMotor() {
+      fetch('/stop_motor').then(() => {
+        document.getElementById('message').innerText = 'Motor berhasil dimatikan.';
+      });
+    }
+    function stopBuzzer() {
+      fetch('/stop_buzzer').then(() => {
+        document.getElementById('message').innerText = 'Buzzer berhasil dimatikan.';
+      });
+    }
+    function updateStatus() {
+      fetch('/status')
+        .then(response => response.json())
+        .then(data => {
+          let displayValue = Math.min(data.sensor, 100);
+          document.getElementById('sensorBar').style.width = displayValue + '%';
+          document.getElementById('sensorValue').innerText = displayValue + '%';
+
+          const motor = document.getElementById('motorStatus');
+          const buzzer = document.getElementById('buzzerStatus');
+          motor.innerText = data.motor ? 'Aktif' : 'Mati';
+          motor.style.color = data.motor ? 'green' : 'red';
+          buzzer.innerText = data.buzzer ? 'Aktif' : 'Mati';
+          buzzer.style.color = data.buzzer ? 'green' : 'red';
+
+          document.getElementById('tempValue').innerText = data.temp.toFixed(1) + ' °C';
+          document.getElementById('humValue').innerText = data.humidity + ' %';
+        });
+    }
+    setInterval(updateStatus, 2000);
+    window.onload = updateStatus;
+  </script>
+</body>
+</html>
