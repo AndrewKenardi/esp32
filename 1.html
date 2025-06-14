@@ -139,7 +139,7 @@
       const data = snapshot.val();
       if (!data) return;
 
-      const displayValue = Math.min(data.sensor || 0, 100);
+      const displayValue = Math.min(data.sensor || 0, 200);
       document.getElementById('sensorBar').style.width = displayValue + '%';
       document.getElementById('sensorValue').innerText = displayValue + '%';
 
