@@ -6,43 +6,43 @@
 
 <script type="module">
   import { db } from './firebase.js';
-  import { collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const loginForm = document.getElementById('loginForm');
 
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const inputUsername = document.getElementById("username").value;
+    const inputPassword = document.getElementById("password").value;
 
     try {
-      const q = query(
-        collection(db, "admins"),
-        where("username", "==", username),
-        where("password", "==", password)
-      );
+      const querySnapshot = await getDocs(collection(db, "Admin"));
 
-      const snapshot = await getDocs(q);
+      let success = false;
 
-      if (!snapshot.empty) {
-        // Login berhasil
-        localStorage.setItem("isLoggedIn", "true");
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.username === inputUsername && data.password === inputPassword) {
+          success = true;
+        }
+      });
 
-        const redirect = localStorage.getItem("redirectAfterLogin");
+      if (success) {
+        const redirect = localStorage.getItem('redirectAfterLogin');
         if (redirect) {
-          localStorage.removeItem("redirectAfterLogin");
+          localStorage.removeItem('redirectAfterLogin');
           window.location.href = redirect;
         } else {
           window.location.href = "index.html";
         }
       } else {
-        alert("Username atau password salah.");
+        alert("Username atau password salah");
       }
 
-    } catch (err) {
-      console.error(err);
-      alert("Terjadi kesalahan: " + err.message);
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Terjadi kesalahan saat login");
     }
   });
 </script>
