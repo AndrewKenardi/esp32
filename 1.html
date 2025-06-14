@@ -99,14 +99,18 @@
     </div>
 
     <div class="button-group">
-      <button class="stop-motor" onclick="stopMotor()">Hentikan Motor</button>
-      <button class="stop-buzzer" onclick="stopBuzzer()">Hentikan Buzzer</button>
-    </div>
+  <button class="start-motor" onclick="overrideMotor(true)">Override Motor ON</button>
+  <button class="stop-motor" onclick="overrideMotor(false)">Override Motor OFF</button>
+</div>
 
-    <div class="button-group">
-        <button class="start-motor" onclick="startMotor()">Nyalakan Motor</button>
-        <button class="start-buzzer" onclick="startBuzzer()">Nyalakan Buzzer</button>
-    </div>
+<div class="button-group">
+  <button class="start-buzzer" onclick="overrideBuzzer(true)">Override Buzzer ON</button>
+  <button class="stop-buzzer" onclick="overrideBuzzer(false)">Override Buzzer OFF</button>
+</div>
+
+<div class="button-group">
+  <button style="background-color:#007bff; color:white;" onclick="resetOverride()">Reset Override</button>
+</div>
 
     <div id="message" class="status-message"></div>
   </div>
@@ -158,28 +162,34 @@
         data.humidity !== undefined ? data.humidity + ' %' : '-- %';
     });
 
-    // Fungsi untuk menghentikan motor
-    window.stopMotor = () => {
-      update(statusRef, { motor: false });
-      document.getElementById('message').innerText = 'Motor berhasil dimatikan.';
-    };
+    // Fungsi untuk aktifkan/menonaktifkan override motor
+window.overrideMotor = (state) => {
+  update(statusRef, {
+    overrideMotor: state,
+    motor: state // langsung atur juga nilai motor
+  });
+  document.getElementById('message').innerText =
+    state ? 'Override Motor AKTIF.' : 'Override Motor DINONAKTIFKAN.';
+};
 
-    // Fungsi untuk menghentikan buzzer
-    window.stopBuzzer = () => {
-      update(statusRef, { buzzer: false });
-      document.getElementById('message').innerText = 'Buzzer berhasil dimatikan.';
-    };
+// Fungsi untuk aktifkan/menonaktifkan override buzzer
+window.overrideBuzzer = (state) => {
+  update(statusRef, {
+    overrideBuzzer: state,
+    buzzer: state // langsung atur juga nilai buzzer
+  });
+  document.getElementById('message').innerText =
+    state ? 'Override Buzzer AKTIF.' : 'Override Buzzer DINONAKTIFKAN.';
+};
 
-    window.startMotor = () => {
-      update(statusRef, { motor: true });
-      document.getElementById('message').innerText = 'Motor berhasil dinyalakan.';
-    };
+// Fungsi untuk reset override (kembali ke mode sensor otomatis)
+window.resetOverride = () => {
+  update(statusRef, {
+    resetOverride: true // nanti akan di-reset kembali ke false oleh ESP32
+  });
+  document.getElementById('message').innerText = 'Override berhasil direset. Sistem kembali ke mode otomatis.';
+};
 
-    // Fungsi untuk menghentikan buzzer
-    window.startBuzzer = () => {
-      update(statusRef, { buzzer: true });
-      document.getElementById('message').innerText = 'Buzzer berhasil dinyalakan.';
-    };
     
   </script>
 </body>
