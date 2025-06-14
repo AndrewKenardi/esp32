@@ -81,3 +81,18 @@ a.card {
   </div>
 </body>
 </html>
+
+<script>
+
+    function goToProject(targetUrl) {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    // sudah login
+    window.location.href = targetUrl;
+  } else {
+    // belum login -> simpan tujuan dan arahkan ke login
+    localStorage.setItem('redirectAfterLogin', targetUrl);
+    window.location.href = 'login.html';
+  }
+}
+</script>
