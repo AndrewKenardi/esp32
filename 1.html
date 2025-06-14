@@ -140,8 +140,8 @@
       if (!data) return;
 
       const displayValue = Math.min(data.sensor || 0, 200);
-      document.getElementById('sensorBar').style.width = displayValue + '%';
-      document.getElementById('sensorValue').innerText = displayValue + '%';
+      document.getElementById('sensorBar').style.width = displayValue/2 + '%';
+      document.getElementById('sensorValue').innerText = displayValue/2 + '%';
 
       const motor = document.getElementById('motorStatus');
       const buzzer = document.getElementById('buzzerStatus');
