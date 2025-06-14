@@ -2,10 +2,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
-  apiKey: "API_KEY_MU",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  projectId: "PROJECT_ID",
-  // ... lainnya jika perlu
+  apiKey: "AIzaSyA1rEsRrEAooYPvx9DXB5Z_1kP6f2kM3q4",
+  authDomain: "esp32-4394c.firebaseapp.com",
+  databaseURL: "https://esp32-4394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "esp32-4394c",
+  storageBucket: "esp32-4394c.firebasestorage.app",
+  messagingSenderId: "434807405847",
+  appId: "1:434807405847:web:8f63bf6703a3c4bc9c8b52"
 };
 
 const app = initializeApp(firebaseConfig);
