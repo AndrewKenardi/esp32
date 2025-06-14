@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+</head>
+<body>
+  <h2>Admin Login</h2>
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Username" required /><br />
+    <input type="password" id="password" placeholder="Password" required /><br />
+    <button type="submit">Login</button>
+  </form>
+  <p id="status"></p>
+
+  <script>
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+  apiKey: "AIzaSyA1rEsRrEAooYPvx9DXB5Z_1kP6f2kM3q4",
+  authDomain: "esp32-4394c.firebaseapp.com",
+  databaseURL: "https://esp32-4394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "esp32-4394c",
+  storageBucket: "esp32-4394c.firebasestorage.app",
+  messagingSenderId: "434807405847",
+  appId: "1:434807405847:web:8f63bf6703a3c4bc9c8b52"
+};
+
+    // Inisialisasi Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Form login
+    const loginForm = document.getElementById('loginForm');
+    const statusText = document.getElementById('status');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      try {
+        const querySnapshot = await db.collection('Admin')
+          .where('username', '==', username)
+          .where('password', '==', password) // ⚠️ Jangan digunakan di produksi, hash seharusnya
+          .get();
+
+        if (!querySnapshot.empty) {
+          statusText.textContent = "Login berhasil!";
+          // redirect ke dashboard misalnya:
+          // window.location.href = "dashboard.html";
+        } else {
+          statusText.textContent = "Username atau password salah!";
+        }
+      } catch (error) {
+        console.error("Error login:", error);
+        statusText.textContent = "Terjadi kesalahan login.";
+      }
+    });
+  </script>
+</body>
+</html>
+
