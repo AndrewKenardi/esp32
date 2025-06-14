@@ -1,6 +1,11 @@
+// firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+
+
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyA1rEsRrEAooYPvx9DXB5Z_1kP6f2kM3q4",
@@ -13,7 +18,4 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-// Export objek yang dibutuhkan
 export const db = getFirestore(app);
-export const auth = getAuth(app);
